@@ -1,23 +1,23 @@
 # Staking and Token Contracts
 
 This project consists of two main contracts:
-- **Token Contract**: Implements an ERC-20 token with a capped maximum supply.
-- **Staking Contract**: Enables users to stake tokens, withdraw them, and claim rewards based on a fixed reward rate.
+- Token Contract: Implements an ERC-20 token with a capped maximum supply.
+- Staking Contract: Enables users to stake tokens, withdraw them, and claim rewards based on a fixed reward rate.
 
 Additionally, a **Foundry script** is provided to deploy both the `Token` and `Staking` contracts.
 
 ## Features
 
 ### Token Contract (`Token.sol`)
-- **ERC-20 Token**: Implements the ERC-20 standard using OpenZeppelin.
-- **Max Supply**: A fixed total supply is minted during contract deployment.
-- **Minting**: The `Token` contract mints the total supply to the owner's address during deployment.
+- ERC-20 Token: Implements the ERC-20 standard using OpenZeppelin.
+- Max Supply: A fixed total supply is minted during contract deployment.
+- Minting: The `Token` contract mints the total supply to the owner's address during deployment.
 
 ### Staking Contract (`Staking.sol`)
-- **Stake Tokens**: Users can lock their tokens into the contract to earn rewards over time.
-- **Withdraw Tokens**: Users can unlock and withdraw their staked tokens at any time.
-- **Claim Rewards**: Users can claim their earned reward tokens.
-- **Reward Mechanism**: Rewards are distributed at a fixed rate using a custom calculation.
+- Stake Tokens: Users can lock their tokens into the contract to earn rewards over time.
+- Withdraw Tokens: Users can unlock and withdraw their staked tokens at any time.
+- Claim Rewards: Users can claim their earned reward tokens.
+- Reward Mechanism: Rewards are distributed at a fixed rate using a custom calculation.
 
 ## Contracts Overview
 
@@ -43,8 +43,8 @@ This contract allows users to stake tokens and receive rewards based on their st
 
 #### Reward Calculation:
 The reward calculation is based on the following logic:
-1. **Reward Per Token**: A fixed reward rate is applied over time.
-2. **Earned Rewards**: Users earn rewards based on the amount of tokens they have staked and the time they remain staked.
+1. Reward Per Token: A fixed reward rate is applied over time.
+2. Earned Rewards: Users earn rewards based on the amount of tokens they have staked and the time they remain staked.
 
 ## Deployment Script
 
@@ -86,12 +86,6 @@ contract TokenStakingScript is Script {
 }
 ```
 
-## How to Use
-
-1. **Deploy Contracts**: Use the provided Foundry script to deploy the `Token` and `Staking` contracts.
-2. **Stake Tokens**: Interact with the `Staking` contract to lock tokens and start earning rewards.
-3. **Withdraw Tokens**: Users can unlock and withdraw their staked tokens at any time.
-4. **Claim Rewards**: Claim earned rewards through the `claimReward` function.
 
 ## Requirements
 
