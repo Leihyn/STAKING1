@@ -10,7 +10,7 @@ pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-error Staking__TransferFailed();
+error Staking__TransferFailed(); //system error, storage, memory, calldata 
 error Staking__NeedsMoreThanZero();
 
 contract Staking {
@@ -106,7 +106,7 @@ contract Staking {
         }
     }
 
-    function claimReward() external updateReward(msg.sender) {
+    function claimReward() public updateReward(msg.sender) {
 
         uint256 reward = s_rewards[msg.sender];
 
@@ -122,3 +122,9 @@ contract Staking {
 
     }
 }
+
+//feedbcak
+//no lock....this is flexible staking
+//create a lock staking, with 7 days completion
+//error-ha
+//script to deploy; easier** 
