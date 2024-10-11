@@ -1,81 +1,105 @@
+# Staking and Token Contracts
 
+This project consists of two main contracts:
+- **Token Contract**: Implements an ERC-20 token with a capped maximum supply.
+- **Staking Contract**: Enables users to stake tokens, withdraw them, and claim rewards based on a fixed reward rate.
 
-# DeFi Staking App - Foundry Project
-
-## Overview
-Welcome to the DeFi Staking App project! This project is built using Solidity and Foundry and allows users to stake tokens and earn rewards. The project was inspired by the ["Code along with Chainlink Labs Lead Developer Advocate Patrick Collins and build your very own DeFi staking app"](https://www.youtube.com/live/-48_hdo9_gg?si=A8Su5Iy6jqbHdliw) tutorial.
+Additionally, a **Foundry script** is provided to deploy both the `Token` and `Staking` contracts.
 
 ## Features
-- Staking: Users can stake their tokens into the contract.
-- Rewards: Users earn rewards over time based on the amount they have staked.
-- Withdrawal: Users can unstake their tokens and withdraw their rewards.
 
+### Token Contract (`Token.sol`)
+- **ERC-20 Token**: Implements the ERC-20 standard using OpenZeppelin.
+- **Max Supply**: A fixed total supply is minted during contract deployment.
+- **Minting**: The `Token` contract mints the total supply to the owner's address during deployment.
 
-## Project Structure
-```
-├── src
-│   └── Staking.sol            # Main staking contract
-├── test
-│   └── Staking.t.sol          # Test cases for the staking contract
-├── foundry.toml               # Foundry configuration file
-├── README.md                  # Project documentation
-```
+### Staking Contract (`Staking.sol`)
+- **Stake Tokens**: Users can lock their tokens into the contract to earn rewards over time.
+- **Withdraw Tokens**: Users can unlock and withdraw their staked tokens at any time.
+- **Claim Rewards**: Users can claim their earned reward tokens.
+- **Reward Mechanism**: Rewards are distributed at a fixed rate using a custom calculation.
 
-## Getting Started
+## Contracts Overview
 
-### Prerequisites
-Before you begin, ensure you have the following installed on your machine:
-- Node.js (v14 or higher)
-- Foundry (Solidity development environment)
-- Git (for version control)
+### Token Contract (`Token.sol`)
 
-### Installation
+#### Constructor Parameters:
+- `owner_`: Address of the token owner (receives the initial supply).
+- `name_`: Name of the token.
+- `symbol_`: Symbol of the token.
+- `maxSupply_`: Maximum supply of the token (minted during deployment).
 
-1. Clone the repository:
+#### Events:
+- `Mint(address indexed to, uint256 value)`: Emitted when new tokens are minted.
+
+### Staking Contract (`Staking.sol`)
+
+This contract allows users to stake tokens and receive rewards based on their staked amount and the duration of staking.
+
+#### Key Functions:
+- `stake(uint256 amount)`: Locks the specified amount of tokens in the contract.
+- `withdraw(uint256 amount)`: Unlocks and withdraws the specified amount of staked tokens.
+- `claimReward()`: Allows users to claim their earned reward tokens.
+
+#### Reward Calculation:
+The reward calculation is based on the following logic:
+1. **Reward Per Token**: A fixed reward rate is applied over time.
+2. **Earned Rewards**: Users earn rewards based on the amount of tokens they have staked and the time they remain staked.
+
+## Deployment Script
+
+The project includes a Foundry script to deploy both the `Token` and `Staking` contracts.
+
+### Staking Script (`Staking.s.sol`)
+
+This script automates the deployment of the `Token` and `Staking` contracts.
+
+#### Steps:
+1. Deploys the `Token` contract with an initial supply of `1000 FRk` tokens.
+2. Deploys the `Staking` contract and associates it with the `Token` contract.
+
+#### How to Run:
+1. Run the script using Foundry's `forge` command:
    ```bash
-   git clone https://github.com/yourusername/defi-staking-app.git
-   cd defi-staking-app
+   forge script path_to/TokenStakingScript.sol --broadcast --private-key <PRIVATE_KEY>
    ```
 
-2. Install Foundry:
-   Follow the instructions on the [Foundry website](https://book.getfoundry.sh) to install Foundry if you haven't already.
-
-3. Install dependencies:
-   ```bash
-   forge install
-   ```
-
-4. Compile the contracts:
-   ```bash
-   forge build
-   ```
-
-5. Deploy the contract:
-   Deploy the contract to a local network or a testnet (e.g., Sepolia).
-   ```bash
-   forge create --rpc-url https://sepolia.infura.io/v3/YOUR_INFURA_PROJECT_ID --private-key YOUR_PRIVATE_KEY src/Staking.sol:Staking
-   ```
-
-6. Run tests:
-   ```bash
-   forge test
-   ```
-
-## Usage
-Once deployed, the staking contract allows users to:
-- Stake tokens by calling the `stake()` function.
-- Claim rewards periodically using the `claimReward()` function.
-- Unstake tokens and withdraw their staked amount and rewards with the `withdrawal()` function.
-
-### Example:
+### Example Script
 ```solidity
-contract Staking {
-    // Staking contract code
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+import {Script} from "forge-std/Script.sol";
+import {Staking} from "../src/Staking.sol";
+import {Token} from "../src/Token.sol";
+
+contract TokenStakingScript is Script {
+
+    Token token;
+    Staking staking;
+
+    function run() public {
+        vm.broadcast();
+        token = new Token(msg.sender, "FARUk", "FRk", 1000000000000000000000);
+        staking = new Staking(address(token), address(token));
+    }
 }
 ```
 
-## Inspiration
-This project was heavily inspired by the ["Code along with Chainlink X Patrick Collins"](https://www.youtube.com/live/-48_hdo9_gg?si=A8Su5Iy6jqbHdliw) tutorial. Special thanks to Patrick Collins and the Chainlink team for providing such valuable educational content!
+## How to Use
 
-## Contributing
-Contributions are welcome! Please feel free to submit a pull request or open an issue if you find any bugs or have suggestions for improvements.
+1. **Deploy Contracts**: Use the provided Foundry script to deploy the `Token` and `Staking` contracts.
+2. **Stake Tokens**: Interact with the `Staking` contract to lock tokens and start earning rewards.
+3. **Withdraw Tokens**: Users can unlock and withdraw their staked tokens at any time.
+4. **Claim Rewards**: Claim earned rewards through the `claimReward` function.
+
+## Requirements
+
+- Solidity `^0.8.0`
+- OpenZeppelin Contracts (`@openzeppelin/contracts`)
+- Foundry for scripting and deployment
+
+## License
+
+This project is licensed under the MIT License.
+
